@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3D Sunglasses Viewer</title>
+
+  <!-- Google's model-viewer web component (zero-build, PBR-correct) -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer@latest/dist/model-viewer.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 100vh;
+      --poster-color: transparent;
+      --progress-bar-color: #ffffff;
+    }
+
+    /* Optional: Add a subtle loading indicator */
+    model-viewer::part(default-progress-bar) {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Tap-to-view hint (appears before interaction) */
+    .tap-hint {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-size: 14px;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+
+    model-viewer[loaded] + .tap-hint {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <!--
+    Model-viewer with HDRI support for sunglasses.
+
+    Key features:
+    - reveal="interaction" = doesn't load until user taps (mobile-safe)
+    - environment-image = provides realistic reflections/refractions for glass
+    - skybox-image = optional visible background (remove if you want solid bg)
+    - camera-controls = orbit, pan, zoom
+    - exposure = brightness (1 = default, adjust 0.5–2 to taste)
+    - shadow-intensity = ground shadow strength
+    - crossorigin = allows assets from CDN/buckets later
+  -->
+  <model-viewer
+    src="/assets/balenciaga_sunglasses.glb"
+    alt="3D Sunglasses Model"
+
+    camera-controls
+    touch-action="pan-y"
+
+    environment-image="/assets/GSG_ProStudiosMetal_Vol2_03_Env_sm.hdr"
+
+    exposure="2.5"
+    shadow-intensity="0.1"
+    shadow-softness="1"
+    tone-mapping="commerce"
+
+    crossorigin="anonymous"
+
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+
+    loading="lazy">
+
+    <!-- Fallback content if model-viewer isn't supported -->
+    <div slot="progress-bar"></div>
+  </model-viewer>
+
+  <!-- <div class="tap-hint">Tap to view 3D model</div> -->
+
+  <script>
+    // Optional: Hide tap hint after first interaction
+    const viewer = document.querySelector('model-viewer');
+    viewer.addEventListener('load', () => {
+      setTimeout(() => {
+        document.querySelector('.tap-hint').style.display = 'none';
+      }, 2000);
+    }, { once: true });
+
+    // Optional: Log errors for debugging
+    viewer.addEventListener('error', (event) => {
+      console.error('Model-viewer error:', event.detail);
+    });
+
+    // Optional: Log when model loads successfully
+    viewer.addEventListener('load', () => {
+      console.log('✓ Model loaded successfully');
+    });
+  </script>
+</body>
+</html>

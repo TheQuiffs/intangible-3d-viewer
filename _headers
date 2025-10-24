@@ -1,0 +1,57 @@
+# Netlify Headers Configuration
+# Ensures proper MIME types, CORS, and caching for 3D assets
+
+# GLB binary files (GLTF)
+/assets/*.glb
+  Content-Type: model/gltf-binary
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# GLTF JSON files
+/assets/*.gltf
+  Content-Type: model/gltf+json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# HDR environment maps (Radiance)
+/assets/*.hdr
+  Content-Type: image/vnd.radiance
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# EXR files (if you end up using them)
+/assets/*.exr
+  Content-Type: image/exr
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# KTX2 compressed textures (for optimized models)
+/assets/*.ktx2
+  Content-Type: image/ktx2
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# Binary buffers
+/assets/*.bin
+  Content-Type: application/octet-stream
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# WebP images (posters)
+/assets/*.webp
+  Content-Type: image/webp
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# PNG images
+/assets/*.png
+  Content-Type: image/png
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
+
+# JPG images
+/assets/*.jpg
+/assets/*.jpeg
+  Content-Type: image/jpeg
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=31536000, immutable
