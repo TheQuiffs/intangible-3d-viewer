@@ -28,7 +28,17 @@
       --progress-bar-color: #ffffff;
 
       /* Make HDRI environment brighter */
-      --environment-image-intensity: 2.5;
+      --environment-image-intensity: 5.0;
+    }
+
+    /* Hide model-viewer default UI elements */
+    model-viewer > * {
+      display: none;
+    }
+
+    model-viewer::part(default-progress-bar),
+    model-viewer::part(default-ar-button) {
+      display: none;
     }
 
     /* Optional: Add a subtle loading indicator */
@@ -73,32 +83,21 @@
   <model-viewer
     src="/assets/balenciaga_sunglasses.glb"
     alt="3D Sunglasses Model"
-
     camera-controls
     touch-action="pan-y"
-
-    <!-- HDRI Settings -->
     environment-image="/assets/GSG_ProStudiosMetal_Vol2_03_Env_sm.hdr"
-    skybox-height="2m"
-
-    <!-- Camera Settings: closer position with wider focal length -->
-    camera-orbit="180deg 75deg 0.18m"
+    camera-orbit="180deg 75deg 0.35m"
     min-camera-orbit="auto auto 0.15m"
     max-camera-orbit="auto auto 0.8m"
     field-of-view="45deg"
     interpolation-decay="0"
-
-    <!-- Lighting Settings -->
-    exposure="1"
+    exposure="4"
     shadow-intensity="1"
     shadow-softness="1"
-    tone-mapping="commerce"
-
+    tone-mapping="neutral"
     crossorigin="anonymous"
-
     ar
     ar-modes="webxr scene-viewer quick-look"
-
     loading="lazy">
 
     <!-- Fallback content if model-viewer isn't supported -->
@@ -119,8 +118,10 @@
     viewer.addEventListener('load', () => {
       console.log('✓ Model loaded successfully');
       // Force the camera to the specified position
-      viewer.cameraOrbit = '180deg 75deg 0.18m';
+      viewer.cameraOrbit = '180deg 75deg 0.35m';
       viewer.jumpCameraToGoal();
+      // Rotate the HDRI environment 90 degrees (not the model)
+      viewer.environmentRotation = '0deg 90deg 0deg';
     });
 
     // Optional: Rotate the HDRI environment programmatically
