@@ -26,6 +26,9 @@
       height: 100vh;
       --poster-color: transparent;
       --progress-bar-color: #ffffff;
+
+      /* Make HDRI environment brighter */
+      --environment-image-intensity: 2.5;
     }
 
     /* Optional: Add a subtle loading indicator */
@@ -74,10 +77,20 @@
     camera-controls
     touch-action="pan-y"
 
+    <!-- HDRI Settings -->
     environment-image="/assets/GSG_ProStudiosMetal_Vol2_03_Env_sm.hdr"
+    skybox-height="2m"
 
-    exposure="2.5"
-    shadow-intensity="0.1"
+    <!-- Camera Settings: closer position with wider focal length -->
+    camera-orbit="180deg 75deg 0.18m"
+    min-camera-orbit="auto auto 0.15m"
+    max-camera-orbit="auto auto 0.8m"
+    field-of-view="45deg"
+    interpolation-decay="0"
+
+    <!-- Lighting Settings -->
+    exposure="1"
+    shadow-intensity="1"
     shadow-softness="1"
     tone-mapping="commerce"
 
@@ -95,23 +108,31 @@
   <!-- <div class="tap-hint">Tap to view 3D model</div> -->
 
   <script>
-    // Optional: Hide tap hint after first interaction
     const viewer = document.querySelector('model-viewer');
-    viewer.addEventListener('load', () => {
-      setTimeout(() => {
-        document.querySelector('.tap-hint').style.display = 'none';
-      }, 2000);
-    }, { once: true });
 
-    // Optional: Log errors for debugging
+    // Log errors for debugging
     viewer.addEventListener('error', (event) => {
       console.error('Model-viewer error:', event.detail);
     });
 
-    // Optional: Log when model loads successfully
+    // Log when model loads successfully and force camera position
     viewer.addEventListener('load', () => {
       console.log('✓ Model loaded successfully');
+      // Force the camera to the specified position
+      viewer.cameraOrbit = '180deg 75deg 0.18m';
+      viewer.jumpCameraToGoal();
     });
+
+    // Optional: Rotate the HDRI environment programmatically
+    // Uncomment to enable automatic HDRI rotation:
+    /*
+    let envRotation = 0;
+    setInterval(() => {
+      envRotation += 1;
+      viewer.environmentImage = viewer.environmentImage; // Force update
+      viewer.orientation = `0deg ${envRotation}deg 0deg`;
+    }, 100);
+    */
   </script>
 </body>
 </html>
